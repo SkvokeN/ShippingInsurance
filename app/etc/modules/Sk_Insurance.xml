@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <Sk_Insurance>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Sk_Insurance>
+    </modules>
+</config>
