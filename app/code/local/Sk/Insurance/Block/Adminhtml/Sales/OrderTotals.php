@@ -1,12 +1,12 @@
 <?php
 
-class Sk_Insurance_Block_Adminhtml_Sales_Creditmemo extends Mage_Sales_Block_Order_Creditmemo_Totals
+class Sk_Insurance_Block_Adminhtml_Sales_OrderTotals extends Mage_Sales_Block_Order_Totals
 {
     protected function _initTotals()
     {
         parent::_initTotals();
 
-        $amt = $this->getOrder()->getInsuranceAmount();
+        $amt = $this->getSource()->getInsuranceAmount();
 
         if ($amt != 0) {
             $this->addTotal(

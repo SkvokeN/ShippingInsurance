@@ -1,6 +1,6 @@
 <?php
 
-class Sk_Insurance_Block_Adminhtml_Sales_Invoice extends Mage_Sales_Block_Order_Invoice_Totals
+class Sk_Insurance_Block_Adminhtml_Sales_CreditmemoTotals extends Mage_Sales_Block_Order_Creditmemo_Totals
 {
     protected function _initTotals()
     {

@@ -1,12 +1,12 @@
 <?php
 
-class Sk_Insurance_Block_Adminhtml_Sales_Order extends Mage_Sales_Block_Order_Totals
+class Sk_Insurance_Block_Adminhtml_Sales_InvoiceTotals extends Mage_Sales_Block_Order_Invoice_Totals
 {
     protected function _initTotals()
     {
         parent::_initTotals();
 
-        $amt = $this->getSource()->getInsuranceAmount();
+        $amt = $this->getOrder()->getInsuranceAmount();
 
         if ($amt != 0) {
             $this->addTotal(

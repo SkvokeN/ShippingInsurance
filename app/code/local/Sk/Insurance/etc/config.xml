@@ -24,11 +24,18 @@
             </skinsurance>
             <adminhtml>
                 <rewrite>
-                    <sales_order_totals>Sk_Insurance_Block_Adminhtml_Sales_Order</sales_order_totals>
-                    <sales_order_invoice_totals>Sk_Insurance_Block_Adminhtml_Sales_Invoice</sales_order_invoice_totals>
-                    <sales_order_creditmemo_totals>Sk_Insurance_Block_Adminhtml_Sales_Creditmemo</sales_order_creditmemo_totals>
+                    <sales_order_totals>Sk_Insurance_Block_Adminhtml_Sales_OrderTotals</sales_order_totals>
+                    <sales_order_invoice_totals>Sk_Insurance_Block_Adminhtml_Sales_InvoiceTotals</sales_order_invoice_totals>
+                    <sales_order_creditmemo_totals>Sk_Insurance_Block_Adminhtml_Sales_CreditmemoTotals</sales_order_creditmemo_totals>
                 </rewrite>
             </adminhtml>
+            <sales>
+                <rewrite>
+                    <order_totals>Sk_Insurance_Block_Sales_OrderTotals</order_totals>
+                    <order_invoice_totals>Sk_Insurance_Block_Sales_InvoiceTotals</order_invoice_totals>
+                    <order_creditmemo_totals>Sk_Insurance_Block_Sales_CreditmemoTotals</order_creditmemo_totals>
+                </rewrite>
+            </sales>
             <checkout>
                 <rewrite>
                     <onepage_shipping_method_available>Sk_Insurance_Block_Checkout_Onepage_Shipping_Method_Available</onepage_shipping_method_available>
