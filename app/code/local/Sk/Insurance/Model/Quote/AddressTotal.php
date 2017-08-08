@@ -10,17 +10,22 @@ class Sk_Insurance_Model_Quote_AddressTotal extends Mage_Sales_Model_Quote_Addre
         }
 
         if ($address->getInsuranceEnable() && Sk_Insurance_Model_Insurance::isActive()) {
+
+            $carrierCode = explode('_', $address->getShippingMethod())[0];
+
+            if (!Sk_Insurance_Model_Insurance::checkInsuranceCarrierActive($carrierCode)) {
+                return $this;
+            }
             $grandTotal = $address->getGrandTotal();
             $baseGrandTotal = $address->getBaseGrandTotal();
 
-            $carrierCode = explode('_',$address->getShippingMethod())[0];
             $type = Sk_Insurance_Model_Insurance::getInsuranceCarrierType($carrierCode);
             $insuranceValue = Sk_Insurance_Model_Insurance::getInsuranceCarrierValue($carrierCode);
 
-            if($type == Sk_Insurance_Model_Insurance::TYPE_ABSOLUTE) {
+            if ($type == Sk_Insurance_Model_Insurance::TYPE_ABSOLUTE) {
                 $address->setInsuranceAmount($insuranceValue);
                 $address->setBaseInsuranceAmount($insuranceValue);
-            }else if($type == Sk_Insurance_Model_Insurance::TYPE_PERCENT) {
+            } else if ($type == Sk_Insurance_Model_Insurance::TYPE_PERCENT) {
                 $totals = array_sum($address->getAllTotalAmounts());
                 $baseTotals = array_sum($address->getAllBaseTotalAmounts());
                 $address->setInsuranceAmount($totals * $insuranceValue / 100);
@@ -29,9 +34,6 @@ class Sk_Insurance_Model_Quote_AddressTotal extends Mage_Sales_Model_Quote_Addre
 
             $address->setGrandTotal($grandTotal + $address->getInsuranceAmount());
             $address->setBaseGrandTotal($baseGrandTotal + $address->getBaseInsuranceAmount());
-        } else {
-            $address->setInsuranceAmount(0);
-            $address->setBaseInsuranceAmount(0);
         }
 
         return $this;

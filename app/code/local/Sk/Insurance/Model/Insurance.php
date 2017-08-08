@@ -32,9 +32,10 @@ class Sk_Insurance_Model_Insurance extends Mage_Core_Model_Abstract
         return Mage::getStoreConfig('insurance/'.$carrierCode.'/type');
     }
 
-    public static function getInsuranceCost($allTotals, $carrierCode)
+    public static function checkInsuranceCarrierActive($carrierCode)
     {
-
+        return (int) Mage::getStoreConfig('insurance/'.$carrierCode.'/active');
     }
+
 
 }

@@ -3,11 +3,6 @@
 class Sk_Insurance_Block_Checkout_Onepage_Shipping_Method_Available extends  Mage_Checkout_Block_Onepage_Shipping_Method_Available
 {
 
-    public function checkInsuranceCarrierActive($carrierCode)
-    {
-        return (int) Mage::getStoreConfig('insurance/'.$carrierCode.'/active');
-    }
-
     public function getInsurancePrice($subTotals, $carrierCode)
     {
         $insuranceCost = 0;

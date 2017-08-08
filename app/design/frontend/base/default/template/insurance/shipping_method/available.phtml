@@ -42,9 +42,9 @@
                                 <ul class="messages"><li class="error-msg"><ul><li><?php echo $this->escapeHtml($_rate->getErrorMessage()) ?></li></ul></li></ul>
                             <?php else: ?>
                             <?php if ($_sole) : ?>
-                                <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" class="insurance-active-<?php echo $this->checkInsuranceCarrierActive($code);?> /></span>
+                                <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" class="insurance-active-<?php echo Sk_Insurance_Model_Insurance::checkInsuranceCarrierActive($code);?> /></span>
                             <?php else: ?>
-                            <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio insurance-active-<?php echo $this->checkInsuranceCarrierActive($code);?>"/>
+                            <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio insurance-active-<?php echo Sk_Insurance_Model_Insurance::checkInsuranceCarrierActive($code);?>"/>
 
                             <?php if ($_rate->getCode() === $this->getAddressShippingMethod()): ?>
                                 <script type="text/javascript">
@@ -67,7 +67,7 @@
                         </li>
                     <?php endforeach; ?>
                 </ul>
-                <?php if($this->checkInsuranceCarrierActive($code)) : ?>
+                <?php if(Sk_Insurance_Model_Insurance::checkInsuranceCarrierActive($code)) : ?>
                     Shipping insurance cost - <?php echo $this->getInsurancePrice($this->getAddress()->getSubtotal(), $code);?>
                 <?php endif; ?>
 
