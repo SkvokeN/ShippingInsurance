@@ -34,6 +34,9 @@ class Sk_Insurance_Model_Quote_AddressTotal extends Mage_Sales_Model_Quote_Addre
 
             $address->setGrandTotal($grandTotal + $address->getInsuranceAmount());
             $address->setBaseGrandTotal($baseGrandTotal + $address->getBaseInsuranceAmount());
+        } else {
+            $address->setInsuranceAmount(0);
+            $address->setBaseInsuranceAmount(0);
         }
 
         return $this;
