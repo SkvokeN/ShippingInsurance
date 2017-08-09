@@ -78,7 +78,7 @@
         <?php endforeach; ?>
     </dl>
     <?php if($insuranceIsActive) : ?>
-        <div id="shippingInsuranceBlock">
+        <div id="shippingInsuranceBlock" style="display: none;">
             <dl>
                 <dt><h3>Shipping insurance</h3></dt
                 <dt>
@@ -97,8 +97,8 @@
             var shipping_method_radio = document.getElementsByName('shipping_method');
             for (var i = 0; i < shipping_method_radio.length; i++)  {
                 if  (shipping_method_radio[i].checked) {
-                    if(shipping_method_radio[i].classList.contains('insurance-active-0')) {
-                        document.getElementById('shippingInsuranceBlock').style.display = 'none';
+                    if(shipping_method_radio[i].classList.contains('insurance-active-1')) {
+                        document.getElementById('shippingInsuranceBlock').style.display = 'block';
                     }
                     break;
                 }
