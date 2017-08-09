@@ -26,12 +26,14 @@
 ?>
 <?php /** @var $this Mage_Checkout_Block_Onepage_Shipping_Method_Available */ ?>
 <?php $_shippingRateGroups = $this->getShippingRates(); ?>
+<?php $insuranceIsActive = Sk_Insurance_Model_Insurance::isActive();?>
 <?php if (!$_shippingRateGroups): ?>
     <p><?php echo $this->__('Sorry, no quotes are available for this order at this time.') ?></p>
 <?php else: ?>
     <dl class="sp-methods">
         <?php $shippingCodePrice = array(); ?>
         <?php $_sole = count($_shippingRateGroups) == 1; foreach ($_shippingRateGroups as $code => $_rates): ?>
+            <?php $checkInsuranceCarrierActive = Sk_Insurance_Model_Insurance::checkInsuranceCarrierActive($code); ?>
             <dt><?php echo $this->escapeHtml($this->getCarrierName($code)); ?></dt>
             <dd>
                 <ul>
@@ -42,9 +44,9 @@
                                 <ul class="messages"><li class="error-msg"><ul><li><?php echo $this->escapeHtml($_rate->getErrorMessage()) ?></li></ul></li></ul>
                             <?php else: ?>
                             <?php if ($_sole) : ?>
-                                <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" class="insurance-active-<?php echo Sk_Insurance_Model_Insurance::checkInsuranceCarrierActive($code);?> /></span>
+                                <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" class="insurance-active-<?php echo $checkInsuranceCarrierActive;?> /></span>
                             <?php else: ?>
-                            <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio insurance-active-<?php echo Sk_Insurance_Model_Insurance::checkInsuranceCarrierActive($code);?>"/>
+                            <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio insurance-active-<?php echo $checkInsuranceCarrierActive;?>"/>
 
                             <?php if ($_rate->getCode() === $this->getAddressShippingMethod()): ?>
                                 <script type="text/javascript">
@@ -67,14 +69,14 @@
                         </li>
                     <?php endforeach; ?>
                 </ul>
-                <?php if(Sk_Insurance_Model_Insurance::checkInsuranceCarrierActive($code)) : ?>
+                <?php if($checkInsuranceCarrierActive) : ?>
                     Shipping insurance cost - <?php echo $this->getInsurancePrice($this->getAddress()->getSubtotal(), $code);?>
                 <?php endif; ?>
 
             </dd>
         <?php endforeach; ?>
     </dl>
-    <?php if(Sk_Insurance_Model_Insurance::isActive()) : ?>
+    <?php if($insuranceIsActive) : ?>
         <dl id="shippingInsuranceBlock">
             <dt>
                  <dt style="font-weight: bold">Shipping insurance</dt
@@ -84,41 +86,48 @@
                 <label for="shippingInsuranceCheckbox" style="padding: 6px 0px 6px 29px;">Insurance</label>
             </dt>
         </dl>
+    <script type="text/javascript">
+        //<![CDATA[
+            var shipping_method_radio = document.getElementsByName('shipping_method');
+            for (var i = 0; i < shipping_method_radio.length; i++)  {
+                if  (shipping_method_radio[i].checked) {
+                    if(shipping_method_radio[i].classList.contains('insurance-active-0')) {
+                        document.getElementById('shippingInsuranceBlock').style.display = 'none';
+                    }
+                    break;
+                }
+            }
+        //]]>
+    </script>
     <?php endif ?>
     <script type="text/javascript">
         //<![CDATA[
-        var shipping_method_radio = document.getElementsByName('shipping_method');
-        for (var i = 0; i < shipping_method_radio.length; i++)  {
-            if  (shipping_method_radio[i].checked) {
-                if(shipping_method_radio[i].classList.contains('insurance-active-0')) {
-                    document.getElementById('shippingInsuranceBlock').style.display = 'none';
-                }
-                break;
-            }
-        }
         <?php if (!empty($shippingCodePrice)): ?>
+            var shippingCodePrice = {<?php echo implode(',',$shippingCodePrice); ?>};
         <?php endif; ?>
         $$('input[type="radio"][name="shipping_method"]').each(function(el){
             Event.observe(el, 'click', function(){
-                if(el.classList.contains('insurance-active-1')){
-                    document.getElementById('shippingInsuranceBlock').style.display = 'block';
-                }else{
-                    document.getElementById('shippingInsuranceBlock').style.display = 'none';
-                    document.getElementById('shippingInsuranceCheckbox').checked = false;
-                }
+                <?php if($insuranceIsActive) : ?>
+                    if(el.classList.contains('insurance-active-1')){
+                        document.getElementById('shippingInsuranceBlock').style.display = 'block';
+                    }else{
+                        document.getElementById('shippingInsuranceBlock').style.display = 'none';
+                        document.getElementById('shippingInsuranceCheckbox').checked = false;
+                    }
+                <?php endif ?>
                 if (el.checked == true) {
                     var getShippingCode = el.getValue();
                     <?php if (!empty($shippingCodePrice)): ?>
-                    var newPrice = shippingCodePrice[getShippingCode];
+                        var newPrice = shippingCodePrice[getShippingCode];
 
-                    if (!lastPrice) {
-                        lastPrice = newPrice;
-                        quoteBaseGrandTotal += newPrice;
-                    }
-                    if (newPrice != lastPrice) {
-                        quoteBaseGrandTotal += (newPrice-lastPrice);
-                        lastPrice = newPrice;
-                    }
+                        if (!lastPrice) {
+                            lastPrice = newPrice;
+                            quoteBaseGrandTotal += newPrice;
+                        }
+                        if (newPrice != lastPrice) {
+                            quoteBaseGrandTotal += (newPrice-lastPrice);
+                            lastPrice = newPrice;
+                        }
                     <?php endif; ?>
                     checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
                     return false;

@@ -9,13 +9,10 @@ class Sk_Insurance_Model_Quote_AddressTotal extends Mage_Sales_Model_Quote_Addre
             return $this;
         }
 
-        if ($address->getInsuranceEnable() && Sk_Insurance_Model_Insurance::isActive()) {
+        $carrierCode = explode('_', $address->getShippingMethod())[0];
 
-            $carrierCode = explode('_', $address->getShippingMethod())[0];
+        if ($address->getInsuranceEnable() && Sk_Insurance_Model_Insurance::checkInsuranceCarrierActive($carrierCode)) {
 
-            if (!Sk_Insurance_Model_Insurance::checkInsuranceCarrierActive($carrierCode)) {
-                return $this;
-            }
             $grandTotal = $address->getGrandTotal();
             $baseGrandTotal = $address->getBaseGrandTotal();
 
@@ -34,7 +31,7 @@ class Sk_Insurance_Model_Quote_AddressTotal extends Mage_Sales_Model_Quote_Addre
 
             $address->setGrandTotal($grandTotal + $address->getInsuranceAmount());
             $address->setBaseGrandTotal($baseGrandTotal + $address->getBaseInsuranceAmount());
-        } else {
+        }else {
             $address->setInsuranceAmount(0);
             $address->setBaseInsuranceAmount(0);
         }

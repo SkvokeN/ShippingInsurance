@@ -28,7 +28,7 @@ class Sk_Insurance_Model_Insurance extends Mage_Core_Model_Abstract
 
     public static function checkInsuranceCarrierActive($carrierCode)
     {
-        return (int) Mage::getStoreConfig('insurance/shipping_rates/'.$carrierCode.'_active');
+        return (int) self::isActive()?Mage::getStoreConfig('insurance/shipping_rates/'.$carrierCode.'_active'):0;
     }
 
 
