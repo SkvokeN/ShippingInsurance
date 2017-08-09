@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: skvoka
- * Date: 07.08.17
- * Time: 16:15
- */
 
 class Sk_Insurance_Model_Insurance extends Mage_Core_Model_Abstract
 {
@@ -24,17 +18,17 @@ class Sk_Insurance_Model_Insurance extends Mage_Core_Model_Abstract
 
     public static function getInsuranceCarrierValue($carrierCode)
     {
-        return Mage::getStoreConfig('insurance/'.$carrierCode.'/value');
+        return Mage::getStoreConfig('insurance/shipping_rates/'.$carrierCode.'_value');
     }
 
     public static function getInsuranceCarrierType($carrierCode)
     {
-        return Mage::getStoreConfig('insurance/'.$carrierCode.'/type');
+        return Mage::getStoreConfig('insurance/shipping_rates/'.$carrierCode.'_type');
     }
 
     public static function checkInsuranceCarrierActive($carrierCode)
     {
-        return (int) Mage::getStoreConfig('insurance/'.$carrierCode.'/active');
+        return (int) Mage::getStoreConfig('insurance/shipping_rates/'.$carrierCode.'_active');
     }
 
 
