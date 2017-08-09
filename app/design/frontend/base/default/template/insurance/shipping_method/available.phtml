@@ -34,7 +34,8 @@
         <?php $shippingCodePrice = array(); ?>
         <?php $_sole = count($_shippingRateGroups) == 1; foreach ($_shippingRateGroups as $code => $_rates): ?>
             <?php $checkInsuranceCarrierActive = Sk_Insurance_Model_Insurance::checkInsuranceCarrierActive($code); ?>
-            <dt><?php echo $this->escapeHtml($this->getCarrierName($code)); ?></dt>
+            <?php $carrierName = $this->escapeHtml($this->getCarrierName($code));?>
+            <dt><?php echo $carrierName; ?></dt>
             <dd>
                 <ul>
                     <?php $_sole = $_sole && count($_rates) == 1; foreach ($_rates as $_rate): ?>
@@ -70,22 +71,27 @@
                     <?php endforeach; ?>
                 </ul>
                 <?php if($checkInsuranceCarrierActive) : ?>
-                    Shipping insurance cost - <?php echo $this->getInsurancePrice($this->getAddress()->getSubtotal(), $code);?>
+                    <?php $insuranceInsurancePriseBlock .= "<b>".$carrierName."</b> insurance - <b>".$this->getInsurancePrice($this->getAddress()->getSubtotal(), $code)."</b> </br>";?>
                 <?php endif; ?>
 
             </dd>
         <?php endforeach; ?>
     </dl>
     <?php if($insuranceIsActive) : ?>
-        <dl id="shippingInsuranceBlock">
-            <dt>
-                 <dt style="font-weight: bold">Shipping insurance</dt
-            </dt>
-            <dt>
-                <input name="shipping_insurance" type="checkbox" value="1" class="radio" id="shippingInsuranceCheckbox" style="float: left; margin-right: -40px;margin-top: 10px;"/>
-                <label for="shippingInsuranceCheckbox" style="padding: 6px 0px 6px 29px;">Insurance</label>
-            </dt>
-        </dl>
+        <div id="shippingInsuranceBlock">
+            <dl>
+                <dt><h3>Shipping insurance</h3></dt
+                <dt>
+                    <input name="shipping_insurance" type="checkbox" value="1" class="radio" id="shippingInsuranceCheckbox" style="float: left; margin-right: -40px;margin-top: 4px;"/>
+                    <label for="shippingInsuranceCheckbox" style="padding: 0px 0px 6px 29px;">Add Insurance</label>
+                </dt>
+            </dl>
+            <dl>
+                <dt style="padding-bottom: 10px;">
+                    <?php echo $insuranceInsurancePriseBlock; ?>
+                </dt>
+            </dl>
+        </div>
     <script type="text/javascript">
         //<![CDATA[
             var shipping_method_radio = document.getElementsByName('shipping_method');
