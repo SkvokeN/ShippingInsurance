@@ -26,14 +26,14 @@
 ?>
 <?php /** @var $this Mage_Checkout_Block_Onepage_Shipping_Method_Available */ ?>
 <?php $_shippingRateGroups = $this->getShippingRates(); ?>
-<?php $insuranceIsActive = Sk_Insurance_Model_Insurance::isActive();?>
+<?php $insuranceIsActive = Mage::helper('skinsurance')->isActive();?>
 <?php if (!$_shippingRateGroups): ?>
     <p><?php echo $this->__('Sorry, no quotes are available for this order at this time.') ?></p>
 <?php else: ?>
     <dl class="sp-methods">
         <?php $shippingCodePrice = array(); ?>
         <?php $_sole = count($_shippingRateGroups) == 1; foreach ($_shippingRateGroups as $code => $_rates): ?>
-            <?php $checkInsuranceCarrierActive = Sk_Insurance_Model_Insurance::checkInsuranceCarrierActive($code); ?>
+            <?php $checkInsuranceCarrierActive = Mage::helper('skinsurance')->checkInsuranceCarrierActive($code); ?>
             <?php $carrierName = $this->escapeHtml($this->getCarrierName($code));?>
             <dt><?php echo $carrierName; ?></dt>
             <dd>
